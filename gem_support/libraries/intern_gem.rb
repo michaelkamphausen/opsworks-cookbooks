@@ -3,7 +3,12 @@
 # and makes it possible to require them right away.
 
 # because chef run in the Bundler environment
-require 'bundler/setup'
+begin
+  require 'bundler/setup'
+rescue LoadError
+  Gem::DependencyInstaller.new.install('bundler')
+  retry
+end
 
 module OpsWorks
   module InternalGems
